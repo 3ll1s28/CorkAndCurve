@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -607,9 +607,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 4.6321917, y: 2.6185277, z: -24.638306}
+    m_Target: {x: -160.60953, y: -34.3443, z: -138.0068}
     speed: 2
-    m_Value: {x: 4.6321917, y: 2.6185277, z: -24.638306}
+    m_Value: {x: -160.60953, y: -34.3443, z: -138.0068}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -655,20 +655,20 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.00008573358, y: -0.7009422, z: -0.0011874008, w: 0.7131895}
+    m_Target: {x: -0.21848363, y: 0.23863965, z: -0.054421704, w: -0.94464076}
     speed: 2
-    m_Value: {x: 0.00008573358, y: 0.7009423, z: 0.0011874009, w: -0.71318954}
+    m_Value: {x: -0.21714815, y: 0.23730426, z: -0.053738248, w: -0.9453283}
   m_Size:
-    m_Target: 5.619476
+    m_Target: 104.15913
     speed: 2
-    m_Value: 5.619476
+    m_Value: 99.673805
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 0.44078058
-    m_SpeedNormalized: 0.2200003
+    m_Speed: 0.9205409
+    m_SpeedNormalized: 0.46000046
     m_SpeedMin: 0.001
     m_SpeedMax: 2
     m_EasingEnabled: 1
@@ -725,7 +725,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 30fbffff
+      m_ExpandedIDs: 66f6ffffc4f7ffff4ef8ffff30fbffff265b00007e5e00002c600000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -892,7 +892,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Materials/Stone
+    - Assets
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -900,16 +900,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 50
   m_LastFolders:
-  - Assets/Materials/Stone
+  - Assets
   m_LastFoldersGridSize: 50
   m_LastProjectPath: D:\UNI\OOP\Assignment 1\CorkAndCurveGitRepo\CorkAndCurve\testProj
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3c690000
-    m_LastClickedID: 26940
-    m_ExpandedIDs: 00000000e86800003669000000ca9a3b
+    scrollPos: {x: 0, y: 73}
+    m_SelectedIDs: e8680000
+    m_LastClickedID: 26856
+    m_ExpandedIDs: 00000000e86800003669000038690000b28b0000b88b0000ca8b0000ce8b0000d88b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1014,9 +1014,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 926
-    width: 2064
-    height: 425
+    y: 924
+    width: 2134
+    height: 427
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1094,9 +1094,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2065
+    x: 2135
     y: 73
-    width: 494
+    width: 424
     height: 1278
   m_SerializedDataModeController:
     m_DataMode: 0
