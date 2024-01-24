@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,26 @@ public class CarManager : MonoBehaviour
 
     Light leftBrake, rightBrake;
 
-    bool engineOn;
+    public bool engineOn;
     public bool canDrive;
 
     Vector3 colliderPosition;
     Quaternion colliderRotation;
 
-    public float tyreGrip = 10, tyreMass = 20;
     public float maxSteerAngle = 30, steerDampening;
+    public AnimationCurve steeringCurve;
 
-    private float activeSteerDampening, drive, brake;
+    [NonSerialized]
+    public float brake, currentSpeed;
 
-    public float brakingPower, horsepower;
+    public float brakingPower, horsepower, horsepowerPerm;
 
     //Input axis
     float hAxis, vAxis;
 
     //Gears and speed
     int currentGear = 0;
+    bool isReverse = false;
 
     float[] gearRatios;
     float diffRatio = 4, currentTorque, clutch = 1;
@@ -85,23 +88,42 @@ public class CarManager : MonoBehaviour
         rightBrake = GameObject.Find("BrakeLightRight").GetComponent<Light>();
 
         //Configuring the car
-        currentGear = 0; //-1: Reverse     0: Neutral      1: 1st etc
+        currentGear = 1; //0: Reverse     1: Neutral      2: 1st etc
         engineOn = false;
 
-        gearRatios = new float[] { 3f, 2.5f, 2f, 1.5f, 1f, 0.8f };
+        gearRatios = new float[] { 3f, 0f, 3f, 2.5f, 2f, 1.5f, 1f, 0.8f };
+
+        horsepowerPerm = horsepower;
     }
 
     void Update()
     {
-        //Update the RPM UI
+        currentSpeed = carRb.velocity.magnitude;
+
+        //Update the RPM UI and implement reverse gear
         RPMtextPass = "RPM:" + (int)revs;
-        if(currentGear != 0)
+
+        if(currentGear > 1)
         {
-            gearTextPass = (currentGear).ToString();
+            isReverse = false;
+
+            horsepower = horsepowerPerm;
+
+            gearTextPass = (currentGear - 1).ToString();
+        }
+        else if(currentGear == 0)
+        {
+            gearTextPass = "R";
+
+            if (!isReverse)
+            {
+                horsepower = -horsepower;
+                isReverse = true;
+            }           
         }
         else
         {
-            gearTextPass = ("N");
+            gearTextPass = "N";
         }
 
         revNeedleRotation = Quaternion.Euler(0, 0, Mathf.Lerp(minRotation, maxRotation, revs / (redline * 1.1f)));
@@ -109,10 +131,6 @@ public class CarManager : MonoBehaviour
         leftBrake.enabled = false;
         rightBrake.enabled = false;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            engineOn = !engineOn;
-        }
 
         //Match wheels up to suspension forces for aesthetics
         for (int i = 0; i < wheels.Length; i++)
@@ -123,15 +141,23 @@ public class CarManager : MonoBehaviour
             wheels[i].rotation = colliderRotation;
         }
 
-        clutch = Input.GetKey(KeyCode.LeftShift) ? 0 : Mathf.Lerp(clutch, 1, Time.deltaTime);
+        
 
         //Input Management
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
 
-        HorizontalInput();
+        if (Input.GetKeyDown(KeyCode.Alpha1)) //Engine on/ off
+        {
+            engineOn = !engineOn;
+        }
+
+        clutch = Input.GetKey(KeyCode.LeftShift) ? 0 : Mathf.Lerp(clutch, 1, Time.deltaTime); //Clutch implementation
+
         VerticalInputAndGearing();
+        HorizontalInput();
         ApplyPower();
+        
     }
     private float CalculateTorque()
     {
@@ -139,9 +165,9 @@ public class CarManager : MonoBehaviour
 
         if (engineOn)
         { 
-            if(clutch < 0.1f || currentGear == 0)
+            if(clutch < 0.1f || currentGear == 1)
             {
-                revs = Mathf.Lerp(revs, Mathf.Max(idle, redline * vAxis) + Random.Range(-50, 50), Time.deltaTime);
+                revs = Mathf.Lerp(revs, Mathf.Max(idle, redline * vAxis) + UnityEngine.Random.Range(-100, 100), Time.deltaTime);
             }
             else
             {
@@ -156,48 +182,23 @@ public class CarManager : MonoBehaviour
     private void ApplyPower()
     {
         currentTorque = CalculateTorque();
-        for(int i=2; i<4; i++)
+        if (canDrive)
         {
-            wheelCols[i].motorTorque = currentTorque * vAxis;
+            for (int i = 2; i < 4; i++)
+            {
+                wheelCols[i].motorTorque = currentTorque * vAxis;
+            }
         }
     }
 
     private void HorizontalInput()
     {
         //Steering rotation relative to speed
-        float speedOffset = ((carRb.velocity.magnitude * 2.23694f) / 10);
+        float steeringAngle = hAxis * steeringCurve.Evaluate(currentSpeed);
 
-        if (carRb.velocity.magnitude > 5) //AND DAMPENING IS NOT BELOW SPECIFIED NUMBER
+        for(int i=0; i<2; i++)
         {
-            activeSteerDampening = steerDampening / speedOffset;
-        }
-        else
-        {
-            activeSteerDampening = steerDampening;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
-        {
-            if (wheelCols[0].steerAngle != 0)
-            {
-                wheelCols[0].steerAngle = 0;
-                wheelCols[1].steerAngle = 0;
-            }
-        }
-
-        if (hAxis != 0)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                wheelCols[i].steerAngle = Mathf.Lerp(wheelCols[i].steerAngle, (maxSteerAngle * hAxis), activeSteerDampening);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                wheelCols[i].steerAngle = wheelCols[i].steerAngle = Mathf.Lerp(wheelCols[i].steerAngle, 0, steerDampening);
-            }
+            wheelCols[i].steerAngle = steeringAngle;
         }
     }
 
@@ -206,9 +207,12 @@ public class CarManager : MonoBehaviour
         //Apply torque and brake to rear wheels
        if (vAxis < 0)
         {
-            leftBrake.enabled = true;
-            rightBrake.enabled = true;
-
+            if (engineOn)
+            {
+                leftBrake.enabled = true;
+                rightBrake.enabled = true;
+            }
+            
             brake = brakingPower;
         }
         else
@@ -223,19 +227,17 @@ public class CarManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.PageUp))
         {
-            if(currentGear < 5)
+            if(currentGear < 7)
             {
                 currentGear += 1;
             }
         }
         else if (Input.GetKeyDown(KeyCode.PageDown))
         {
-            if(currentGear > -1)
+            if(currentGear > 0)
             {
                 currentGear -= 1;
             }
         }
     }
-
-
 }

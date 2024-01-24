@@ -6,30 +6,32 @@ public class LapManager : MonoBehaviour
 {
     //Game state
     GameManager managerRef;
-    string gameState;
+    int gameState;
 
     //Lap Time
     bool lapStarted = false, lastLap = false;
-    float startTime, finishedTime, countdownToStart;
-    public float elapsedTime;
-    public float[] lapTimes; //Stores all RELEVANT lap times
+    public bool hasCounted = false, lapValid;
+    float startTime, countdownToStart;
+    public float elapsedTime, countdownTimer = 10, finishedTime, bestTime;
+    public List<float> lapTimes = new List<float>(); //Stores all RELEVANT lap times
 
     // Start is called before the first frame update
     void Start()
     {
         managerRef = GameObject.Find("Game Manager").GetComponent<GameManager>();
-
+        lapValid = true;
         gameState = managerRef.gameState;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(managerRef.gameState == "PLAY" && managerRef.gameFirstStarted)
+        if(managerRef.gameState == 2)
         {
-            managerRef.gameFirstStarted = false; //Ensures single execution
-
-
+            if (!hasCounted)
+            {
+                CountDown(countdownTimer);
+            }
         }
 
         if (lapStarted)
@@ -40,17 +42,44 @@ public class LapManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider col) //LineCrossed
     {
-        finishedTime = Time.time - startTime;
+        if (elapsedTime > 0)
+        {
+            if (lapValid)
+            {
+                finishedTime = Time.time - startTime;
+                lapTimes.Add(finishedTime);
+
+                if (bestTime == 0)
+                {
+                    bestTime = finishedTime;
+                }
+
+                if (lapTimes.Count > 1 && finishedTime < bestTime) //If more than one
+                {
+                    bestTime = finishedTime;
+                }
+            }
+            lapValid = true;
+        }
+        else
+        {
+            lapValid = true;
+        }
 
         lapStarted = true;
         startTime = Time.time;
     }
 
-    private IEnumerator CountDown(int seconds)
+    private void CountDown(float seconds)
     {
-        for(int i=0; i<seconds; i++)
+        if(seconds > 0)
         {
-            yield return new WaitForSeconds(1);
-        }        
+            seconds -= Time.deltaTime;
+            countdownTimer = seconds;
+        }
+        else
+        {
+            hasCounted = true;
+        }
     }
 }
