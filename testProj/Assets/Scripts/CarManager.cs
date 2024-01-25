@@ -14,51 +14,37 @@ public class CarManager : MonoBehaviour
 
     //Car Components
     Rigidbody carRb;
-
-    Transform frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel;
-    WheelCollider frontLeftCol, frontRightCol, rearLeftCol, rearRightCol;
-
     Light leftBrake, rightBrake;
-
-    public bool engineOn;
-    public bool canDrive;
-
     Vector3 colliderPosition;
     Quaternion colliderRotation;
 
+    //Steering
     public float maxSteerAngle = 30, steerDampening;
     public AnimationCurve steeringCurve;
 
+    //Gearbox, powertrain and brakes
     [NonSerialized]
     public float brake, currentSpeed;
 
+    public bool engineOn, canDrive;
     public float brakingPower, horsepower, horsepowerPerm;
+    int currentGear = 0;
+    bool isReverse = false;
+    float[] gearRatios;
+    float diffRatio = 4, currentTorque, clutch = 1;
+    private float revs, redline = 8000, idle = 1000, wheelRPM, minRotation = 133.89f, maxRotation = -103.17f;
+    public Quaternion revNeedleRotation;
+    public AnimationCurve HPtoRPMcurve;
+    Transform[] wheels;
+    WheelCollider[] wheelCols;
+    Transform frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel;
+    WheelCollider frontLeftCol, frontRightCol, rearLeftCol, rearRightCol;
 
     //Input axis
     float hAxis, vAxis;
 
-    //Gears and speed
-    int currentGear = 0;
-    bool isReverse = false;
-
-    float[] gearRatios;
-    float diffRatio = 4, currentTorque, clutch = 1;
-
-    public int topSpeed = 160;
-    private float revs, redline = 8000, idle = 1000, wheelRPM;
-
-    public Quaternion revNeedleRotation;
-
-    private float minRotation = 133.89f, maxRotation = -103.17f;
-    public AnimationCurve HPtoRPMcurve;
-
+    //Limited UI stuff
     public string gearTextPass, RPMtextPass;
-
-    //Data clusters
-    Transform[] wheels;
-    WheelCollider[] wheelCols;
-
-
 
     void Start()//Initialisation
     {
@@ -88,7 +74,7 @@ public class CarManager : MonoBehaviour
         rightBrake = GameObject.Find("BrakeLightRight").GetComponent<Light>();
 
         //Configuring the car
-        currentGear = 1; //0: Reverse     1: Neutral      2: 1st etc
+        currentGear = 1; //0: Reverse     1: Neutral      2: 1st etc etc
         engineOn = false;
 
         gearRatios = new float[] { 3f, 0f, 3f, 2.5f, 2f, 1.5f, 1f, 0.8f };
