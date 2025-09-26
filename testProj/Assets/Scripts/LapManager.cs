@@ -6,7 +6,6 @@ public class LapManager : MonoBehaviour
 {
     //Game state
     GameManager managerRef;
-    int gameState;
 
     //Lap Time
     bool lapStarted = false, lastLap = false;
@@ -20,7 +19,6 @@ public class LapManager : MonoBehaviour
     {
         managerRef = GameObject.Find("Game Manager").GetComponent<GameManager>();
         lapValid = true;
-        gameState = managerRef.gameState;
     }
 
     // Update is called once per frame

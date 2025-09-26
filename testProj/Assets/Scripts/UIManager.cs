@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
 {
     //Game state
     GameManager managerRef;
-    string gameState;
 
     LapManager lapManagerRef;
     CarManager carManagerRef;
@@ -23,7 +22,6 @@ public class UIManager : MonoBehaviour
     //Start Menu and Gameplay General
     private CanvasGroup playCanvas, startMenuCanvas, playIntroCanvas, qualPhase;
     private List<CanvasGroup> canvasGroups = new List<CanvasGroup>();
-    private Button playButton;
 
     public int UIState = 0;
 
@@ -55,8 +53,6 @@ public class UIManager : MonoBehaviour
         qualPhase = GameObject.Find("QualPhase").GetComponent<CanvasGroup>();
 
         canvasGroups.Add(playCanvas); canvasGroups.Add(startMenuCanvas); canvasGroups.Add(playIntroCanvas); canvasGroups.Add(qualPhase);
-
-        playButton = GameObject.Find("PlayButton").GetComponent<Button>();
 
         lapTime = GameObject.Find("CurrentLapTime").GetComponent<TMP_Text>();
         finishedLapTime = GameObject.Find("LastLapTime").GetComponent<TMP_Text>();

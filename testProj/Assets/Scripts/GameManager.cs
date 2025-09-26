@@ -5,8 +5,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int gameState;
-    public string[] gameStates;
-
     private UIManager UIref;
     private CarManager carRef;
     private LapManager lapRef;
@@ -19,8 +17,7 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        gameStates = new string[] { "START_MENU", "PLAY", "QUAL_PHASE", "CHALLENGE_PHASE", "WIN", "LOSS" };
+    { 
 
         UIref = GameObject.Find("UI Layer").GetComponent<UIManager>();
         car = GameObject.Find("PlayerCar");
