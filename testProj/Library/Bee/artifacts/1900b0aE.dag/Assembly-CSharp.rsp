@@ -353,6 +353,7 @@
 -analyzer:"D:/Unity/Installs/2022.3.10f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"D:/Unity/Installs/2022.3.10f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/CameraBehaviour.cs"
+"Assets/Scripts/CarBase.cs"
 "Assets/Scripts/CarManager.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/LapManager.cs"

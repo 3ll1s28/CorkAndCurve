@@ -40,10 +40,5 @@ public class CameraBehaviour : MonoBehaviour
             default:
                 break;
         }
-
-        if(managerRef.gameState == 2)
-        {
-            
-        }   
     }
 }

@@ -7,9 +7,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class CarManager : MonoBehaviour
+public class CarManager : CarBase
 {
     //Script references
+    
     LapManager lapRef;
 
     //Car Components
@@ -45,6 +46,13 @@ public class CarManager : MonoBehaviour
 
     //Limited UI stuff
     public string gearTextPass, RPMtextPass;
+
+    public override void CalculatePosition(CarBase[] cars)
+    {
+        base.CalculatePosition(cars);
+
+        //Include more logic here when AI added
+    }
 
     void Start()//Initialisation
     {
@@ -84,6 +92,8 @@ public class CarManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(revs + " " + wheelRPM); //Part of a test carried out for the test log
+
         currentSpeed = carRb.velocity.magnitude;
 
         //Update the RPM UI and implement reverse gear
@@ -177,7 +187,7 @@ public class CarManager : MonoBehaviour
         }
     }
 
-    private void HorizontalInput()
+    public virtual void HorizontalInput()
     {
         //Steering rotation relative to speed
         float steeringAngle = hAxis * steeringCurve.Evaluate(currentSpeed);
