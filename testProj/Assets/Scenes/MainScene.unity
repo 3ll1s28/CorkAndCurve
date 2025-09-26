@@ -4747,10 +4747,10 @@ MonoBehaviour:
     time to beat around the Cork & Curve track.
 
 
-    Take the right racing line
-    and ensure you don''t enter a corner too fast, braking too late will reap consequeces.
-    Your current, previous and best lap times are displayed in the bottom left of
-    your screen.'
+    Take the racing line and ensure
+    you don''t enter a corner too fast; braking too late will reap consequeces. Your
+    current, previous and best lap times are displayed in the bottom left of your
+    screen.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
